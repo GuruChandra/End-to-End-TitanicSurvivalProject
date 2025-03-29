@@ -1,3 +1,11 @@
+Update requirements.txt
+
+Setup.py
+
+Logging 
+
+Run pip install -r requirements.txt
+
 1. Create jupyternotebook for each stage in the research folder refering the already created/solved ML notebook
 
 
