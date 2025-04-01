@@ -66,12 +66,15 @@ class DataTransformation:
         df['Embarked']=df['Embarked'].fillna(df['Embarked'].mode()[0])
         df['Embarked'] = (df['Embarked'].map({'C':0, 'S':1, 'Q':2})).astype(int)
         
+        df['Cabin']=df['Cabin'].fillna("X").map(lambda x: x[0])
         df['Cabin']=df.apply(lambda row: assignCabin(row),axis=1)
-
+        print(f"Cabin data after assigned values: {df['Cabin'].head()}")
 
         cabinEncode = OrdinalEncoder()
         df['Cabin']=(cabinEncode.fit_transform(df[['Cabin']])).astype(int)
+        df.drop(columns=['PassengerId','Name','Ticket','Fare'],inplace=True,axis=1)
         #print(df['Cabin'].isnull().sum())
+        #print(df.head())
         df_np = df.to_numpy()
 
         X_train,y_train = df_np[:-418,1:],df_np[:-418,0]
@@ -84,6 +87,7 @@ class DataTransformation:
         pd.DataFrame(y_train).to_csv(y_train_path,index=False)
 
         logger.info(f"Train feature files created: {X_train_path} \n and {y_train_path}")
+        logger.info(f"Feature row looks like: {df.head(3)}")
         X_test_path = os.path.join(self.config.root_dir, 'test_features_x.csv')
         pd.DataFrame(X_test).to_csv(X_test_path,index=False)
 

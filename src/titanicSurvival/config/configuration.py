@@ -1,6 +1,6 @@
 from titanicSurvival.constants import *
 from titanicSurvival.utils.common import  read_yaml, create_directories
-from titanicSurvival.entity import DataIngestionConfig,DataValidatioConfig,DataTransformationConfig
+from titanicSurvival.entity import DataIngestionConfig,DataValidatioConfig,DataTransformationConfig,ModelTrainerConfig
 
 class ConfigurationManager:
     def __init__(self,
@@ -47,3 +47,14 @@ class ConfigurationManager:
             
         )
         return data_tranformation_config
+    
+    def get_model_trainer(self) -> ModelTrainerConfig:
+        config = self.config.model_trainer
+
+        create_directories([config.root_dir])
+
+        model_trainer_config = ModelTrainerConfig(
+            root_dir=config.root_dir,
+            data_path=config.data_path
+        )
+        return model_trainer_config
